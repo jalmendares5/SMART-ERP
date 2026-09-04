@@ -1,0 +1,332 @@
+<Window x:Class="SMART_ERP.Views.PurchaseView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:SMART_ERP.ViewModels"
+        mc:Ignorable="d"
+        Title="Compras" 
+        Height="700" Width="1100"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        Background="#F5F5F5">
+    
+    <Window.DataContext>
+        <viewmodels:PurchaseViewModel/>
+    </Window.DataContext>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Título -->
+        <TextBlock Grid.Row="0" 
+                   Text="Compras" 
+                   FontSize="24" 
+                   FontWeight="Bold" 
+                   Foreground="#2196F3"
+                   Margin="0,0,0,20"/>
+
+        <!-- Datos de Compra -->
+        <Border Grid.Row="1" 
+                Background="White" 
+                Padding="20" 
+                CornerRadius="10" 
+                BorderThickness="1" 
+                BorderBrush="#E0E0E0"
+                Margin="0,0,0,20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Número:" Margin="0,0,0,5" FontWeight="SemiBold"/>
+                <TextBox Grid.Column="0" Text="{Binding PurchaseNumber}" IsReadOnly="True" Background="#F3F4F6" Padding="8" Margin="0,0,10,0"/>
+
+                <TextBlock Grid.Column="1" Text="Fecha:" Margin="10,0,0,5" FontWeight="SemiBold"/>
+                <DatePicker Grid.Column="1" SelectedDate="{Binding PurchaseDate}" Padding="8" Margin="10,0,10,0"/>
+
+                <TextBlock Grid.Column="2" Text="Proveedor *:" Margin="10,0,0,5" FontWeight="SemiBold"/>
+                <ComboBox Grid.Column="2" 
+                          ItemsSource="{Binding Vendors}" 
+                          SelectedItem="{Binding SelectedVendor}"
+                          DisplayMemberPath="Name"
+                          Padding="8" 
+                          Margin="10,0,0,0"/>
+            </Grid>
+        </Border>
+
+        <!-- Agregar Producto -->
+        <Border Grid.Row="2" 
+                Background="White" 
+                Padding="20" 
+                CornerRadius="10" 
+                BorderThickness="1" 
+                BorderBrush="#E0E0E0"
+                Margin="0,0,0,20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Producto:" Margin="0,0,0,5" FontWeight="SemiBold"/>
+                <ComboBox Grid.Column="0" 
+                          ItemsSource="{Binding Products}" 
+                          SelectedItem="{Binding SelectedProduct}"
+                          DisplayMemberPath="Name"
+                          Padding="8" 
+                          Margin="0,0,10,0"/>
+
+                <TextBlock Grid.Column="1" Text="Cantidad:" Margin="10,0,0,5" FontWeight="SemiBold"/>
+                <TextBox Grid.Column="1" Text="{Binding ItemQuantity, StringFormat=N2}" Padding="8" Margin="10,0,10,0"/>
+
+                <TextBlock Grid.Column="2" Text="Costo:" Margin="10,0,0,5" FontWeight="SemiBold"/>
+                <TextBox Grid.Column="2" Text="{Binding ItemCost, StringFormat=L {0:N2}}" Padding="8" Margin="10,0,10,0"/>
+
+                <TextBlock Grid.Column="3" Text="Descuento:" Margin="10,0,0,5" FontWeight="SemiBold"/>
+                <TextBox Grid.Column="3" Text="{Binding ItemDiscount, StringFormat=L {0:N2}}" Padding="8" Margin="10,0,10,0"/>
+
+                <Button Grid.Column="4" 
+                        Content="Agregar" 
+                        Command="{Binding AddItemCommand}" 
+                        Width="100" 
+                        Height="35"
+                        Background="#4CAF50" 
+                        Foreground="White" 
+                        BorderThickness="0"
+                        Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" 
+                                               CornerRadius="5" 
+                                               Padding="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#45A049"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Error Message -->
+        <TextBlock Grid.Row="3" 
+                   Text="{Binding ErrorMessage}" 
+                   Foreground="#D32F2F" 
+                   FontSize="12"
+                   Margin="0,0,0,10"
+                   TextWrapping="Wrap"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+        <!-- Items de Compra -->
+        <Border Grid.Row="4" 
+                Background="White" 
+                CornerRadius="10" 
+                BorderThickness="1" 
+                BorderBrush="#E0E0E0">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid Grid.Row="0" 
+                          ItemsSource="{Binding PurchaseItems}" 
+                          SelectedItem="{Binding SelectedPurchaseItem}"
+                          AutoGenerateColumns="False" 
+                          CanUserAddRows="False" 
+                          CanUserDeleteRows="False"
+                          SelectionMode="Single"
+                          BorderThickness="0"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          HorizontalGridLinesBrush="#E0E0E0"
+                          RowBackground="White"
+                          AlternatingRowBackground="#F9F9F9"
+                          Height="200">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Código" Binding="{Binding ProductCode}" Width="100" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Producto" Binding="{Binding ProductName}" Width="2*" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Cantidad" Binding="{Binding Quantity, StringFormat=N2}" Width="80" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Costo" Binding="{Binding Cost, StringFormat=L {0:N2}}" Width="100" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Descuento" Binding="{Binding Discount, StringFormat=L {0:N2}}" Width="100" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat=L {0:N2}}" Width="100" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Totales -->
+                <Grid Grid.Row="1" Margin="0,15,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Subtotal:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Subtotal, StringFormat=L {0:N2}}" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="ISV (15%):" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Tax, StringFormat=L {0:N2}}" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Descuento:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Discount, StringFormat=L {0:N2}}" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="TOTAL:" FontWeight="Bold" FontSize="16" Foreground="#2196F3" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Total, StringFormat=L {0:N2}}" FontWeight="Bold" FontSize="16" Foreground="#2196F3" Margin="0,0,0,5"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Botones de Acción -->
+                <StackPanel Grid.Row="2" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Right"
+                            Margin="0,0,0,0">
+                    <Button Content="Eliminar Item" 
+                            Command="{Binding RemoveItemCommand}" 
+                            Width="120" 
+                            Height="35" 
+                            Margin="0,0,10,0"
+                            Background="#F44336" 
+                            Foreground="White" 
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                   CornerRadius="5" 
+                                                   Padding="10">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#D32F2F"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="Nueva Compra" 
+                            Command="{Binding CreateNewCommand}" 
+                            Width="120" 
+                            Height="35" 
+                            Margin="0,0,10,0"
+                            Background="#2196F3" 
+                            Foreground="White" 
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                   CornerRadius="5" 
+                                                   Padding="10">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#1976D2"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="Guardar Compra" 
+                            Command="{Binding SaveCommand}" 
+                            Width="120" 
+                            Height="35" 
+                            Background="#4CAF50" 
+                            Foreground="White" 
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                   CornerRadius="5" 
+                                                   Padding="10">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#45A049"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,409 @@
+<UserControl x:Class="SMART_ERP.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d"
+             Background="#F8FAFC">
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ENCABEZADO -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Dashboard - Métricas Principales"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       Foreground="#0F172A"
+                       VerticalAlignment="Center"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBlock Text="Desde:" 
+                           VerticalAlignment="Center" 
+                           Margin="0,0,8,0"
+                           FontSize="12"
+                           Foreground="#64748B"/>
+                <DatePicker SelectedDate="{Binding FilterFromDate}"
+                            Height="32"
+                            Width="120"
+                            Margin="0,0,16,0"/>
+                
+                <TextBlock Text="Hasta:" 
+                           VerticalAlignment="Center" 
+                           Margin="0,0,8,0"
+                           FontSize="12"
+                           Foreground="#64748B"/>
+                <DatePicker SelectedDate="{Binding FilterToDate}"
+                            Height="32"
+                            Width="120"
+                            Margin="0,0,16,0"/>
+
+                <Button Content="Restablecer"
+                        Padding="12,7"
+                        Command="{Binding ResetFiltersCommand}"
+                        Margin="0,0,8,0"/>
+                <Button Content="Actualizar"
+                        Padding="12,7"
+                        Command="{Binding RefreshCommand}"
+                        Margin="0,0,8,0"/>
+                <Button Content="Exportar Dashboard"
+                        Padding="12,7"
+                        Command="{Binding ExportDashboardCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- KPI CARDS -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Total Sales -->
+            <Border Grid.Column="0" 
+                    Background="White" 
+                    BorderBrush="#E2E8F0" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="16">
+                <StackPanel>
+                    <TextBlock Text="{Binding Summary.TotalSales.Icon}" 
+                               FontFamily="Segoe MDL2 Assets" 
+                               FontSize="24" 
+                               Foreground="{Binding Summary.TotalSales.Color}"/>
+                    <TextBlock Text="{Binding Summary.TotalSales.Title}" 
+                               FontSize="11" 
+                               Foreground="#64748B" 
+                               Margin="0,8,0,4"/>
+                    <TextBlock Text="{Binding Summary.TotalSales.Value, StringFormat={}{0:C2}}" 
+                               FontSize="20" 
+                               FontWeight="SemiBold" 
+                               Foreground="#0F172A"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Total Commission -->
+            <Border Grid.Column="2" 
+                    Background="White" 
+                    BorderBrush="#E2E8F0" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="16">
+                <StackPanel>
+                    <TextBlock Text="{Binding Summary.TotalCommission.Icon}" 
+                               FontFamily="Segoe MDL2 Assets" 
+                               FontSize="24" 
+                               Foreground="{Binding Summary.TotalCommission.Color}"/>
+                    <TextBlock Text="{Binding Summary.TotalCommission.Title}" 
+                               FontSize="11" 
+                               Foreground="#64748B" 
+                               Margin="0,8,0,4"/>
+                    <TextBlock Text="{Binding Summary.TotalCommission.Value, StringFormat={}{0:C2}}" 
+                               FontSize="20" 
+                               FontWeight="SemiBold" 
+                               Foreground="#0F172A"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Sales Count -->
+            <Border Grid.Column="4" 
+                    Background="White" 
+                    BorderBrush="#E2E8F0" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="16">
+                <StackPanel>
+                    <TextBlock Text="{Binding Summary.SalesCount.Icon}" 
+                               FontFamily="Segoe MDL2 Assets" 
+                               FontSize="24" 
+                               Foreground="{Binding Summary.SalesCount.Color}"/>
+                    <TextBlock Text="{Binding Summary.SalesCount.Title}" 
+                               FontSize="11" 
+                               Foreground="#64748B" 
+                               Margin="0,8,0,4"/>
+                    <TextBlock Text="{Binding Summary.SalesCount.Value, StringFormat={}{0:N0}}" 
+                               FontSize="20" 
+                               FontWeight="SemiBold" 
+                               Foreground="#0F172A"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Average Sale -->
+            <Border Grid.Column="6" 
+                    Background="White" 
+                    BorderBrush="#E2E8F0" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="16">
+                <StackPanel>
+                    <TextBlock Text="{Binding Summary.AverageSale.Icon}" 
+                               FontFamily="Segoe MDL2 Assets" 
+                               FontSize="24" 
+                               Foreground="{Binding Summary.AverageSale.Color}"/>
+                    <TextBlock Text="{Binding Summary.AverageSale.Title}" 
+                               FontSize="11" 
+                               Foreground="#64748B" 
+                               Margin="0,8,0,4"/>
+                    <TextBlock Text="{Binding Summary.AverageSale.Value, StringFormat={}{0:C2}}" 
+                               FontSize="20" 
+                               FontWeight="SemiBold" 
+                               Foreground="#0F172A"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Active Vendors -->
+            <Border Grid.Column="8" 
+                    Background="White" 
+                    BorderBrush="#E2E8F0" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="16">
+                <StackPanel>
+                    <TextBlock Text="{Binding Summary.ActiveVendors.Icon}" 
+                               FontFamily="Segoe MDL2 Assets" 
+                               FontSize="24" 
+                               Foreground="{Binding Summary.ActiveVendors.Color}"/>
+                    <TextBlock Text="{Binding Summary.ActiveVendors.Title}" 
+                               FontSize="11" 
+                               Foreground="#64748B" 
+                               Margin="0,8,0,4"/>
+                    <TextBlock Text="{Binding Summary.ActiveVendors.Value, StringFormat={}{0:N0}}" 
+                               FontSize="20" 
+                               FontWeight="SemiBold" 
+                               Foreground="#0F172A"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Active Customers -->
+            <Border Grid.Column="10" 
+                    Background="White" 
+                    BorderBrush="#E2E8F0" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="16">
+                <StackPanel>
+                    <TextBlock Text="{Binding Summary.ActiveCustomers.Icon}" 
+                               FontFamily="Segoe MDL2 Assets" 
+                               FontSize="24" 
+                               Foreground="{Binding Summary.ActiveCustomers.Color}"/>
+                    <TextBlock Text="{Binding Summary.ActiveCustomers.Title}" 
+                               FontSize="11" 
+                               Foreground="#64748B" 
+                               Margin="0,8,0,4"/>
+                    <TextBlock Text="{Binding Summary.ActiveCustomers.Value, StringFormat={}{0:N0}}" 
+                               FontSize="20" 
+                               FontWeight="SemiBold" 
+                               Foreground="#0F172A"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- CONTENT ROWS -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="12"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- SALES TREND CHART -->
+            <Border Grid.Row="0" 
+                    Background="White" 
+                    BorderBrush="#E2E8F0" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="16">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" 
+                               Text="Tendencia de Ventas (Últimos 30 días)" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" 
+                               Foreground="#0F172A" 
+                               Margin="0,0,0,12"/>
+
+                    <!-- Comparison Metrics -->
+                    <Grid Grid.Row="1" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" 
+                                Background="#F0FDF4" 
+                                CornerRadius="6" 
+                                Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="Crecimiento Ventas" 
+                                           FontSize="11" 
+                                           Foreground="#065F46"/>
+                                <TextBlock Text="{Binding Comparison.SalesGrowthPercentage, StringFormat={}{0:P2}}" 
+                                           FontSize="16" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="#059669"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="2" 
+                                Background="#DBEAFE" 
+                                CornerRadius="6" 
+                                Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="Crecimiento Cantidad" 
+                                           FontSize="11" 
+                                           Foreground="#075985"/>
+                                <TextBlock Text="{Binding Comparison.CountGrowthPercentage, StringFormat={}{0:P2}}" 
+                                           FontSize="16" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="#0369A1"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="4" 
+                                Background="#FEF3C7" 
+                                CornerRadius="6" 
+                                Padding="12">
+                            <StackPanel>
+                                <TextBlock Text="Crecimiento Comisiones" 
+                                           FontSize="11" 
+                                           Foreground="#92400E"/>
+                                <TextBlock Text="{Binding Comparison.CommissionGrowthPercentage, StringFormat={}{0:P2}}" 
+                                           FontSize="16" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="#B45309"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <lvc:CartesianChart Grid.Row="2" 
+                                       Series="{Binding SalesSeries}"
+                                       LegendLocation="Top"
+                                       Margin="0,10,0,0">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Fecha" Labels="{Binding TrendLabels}"/>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Ventas (L.)" LabelFormatter="{Binding CurrencyFormatter}"/>
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+                </Grid>
+            </Border>
+
+            <!-- TOP TABLES ROW -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- TOP VENDORS -->
+                <Border Grid.Column="0" 
+                        Background="White" 
+                        BorderBrush="#E2E8F0" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="16">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" 
+                                   Text="Top 5 Vendedores" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#0F172A" 
+                                   Margin="0,0,0,12"/>
+
+                        <DataGrid Grid.Row="1"
+                                  ItemsSource="{Binding TopVendors}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  SelectionMode="Single"
+                                  RowHeight="32"
+                                  BorderThickness="0">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Vendedor" Binding="{Binding VendorName}" Width="*"/>
+                                <DataGridTextColumn Header="Ventas" Binding="{Binding SalesCount}" Width="80"/>
+                                <DataGridTextColumn Header="Total" Binding="{Binding TotalSales, StringFormat=C2}" Width="100"/>
+                                <DataGridTextColumn Header="Comisión" Binding="{Binding CommissionGenerated, StringFormat=C2}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+
+                <!-- TOP CUSTOMERS -->
+                <Border Grid.Column="2" 
+                        Background="White" 
+                        BorderBrush="#E2E8F0" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="16">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" 
+                                   Text="Top 5 Clientes" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#0F172A" 
+                                   Margin="0,0,0,12"/>
+
+                        <DataGrid Grid.Row="1"
+                                  ItemsSource="{Binding TopCustomers}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  SelectionMode="Single"
+                                  RowHeight="32"
+                                  BorderThickness="0">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Cliente" Binding="{Binding CustomerName}" Width="*"/>
+                                <DataGridTextColumn Header="Compras" Binding="{Binding PurchaseCount}" Width="80"/>
+                                <DataGridTextColumn Header="Total" Binding="{Binding TotalPurchased, StringFormat=C2}" Width="100"/>
+                                <DataGridTextColumn Header="Última Compra" Binding="{Binding LastPurchaseDate, StringFormat=dd/MM/yyyy}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

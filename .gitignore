@@ -1,0 +1,45 @@
+﻿# .NET / build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Backups / historical copies
+Backups/
+**/Backups/
+.backups_*/
+**/.backups_*/
+BACKUP_*/
+**/BACKUP_*/
+*.bak
+*.backup
+*.old
+*.bak_*
+*.backup_*
+*backup*
+*Backup*
+*BACKUP*
+
+# Logs / temporary files
+*.log
+*.tmp
+*.temp
+
+# Local data / settings
+companies.json
+appsettings.local.json
+appsettings.*.local.json
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# OS
+Thumbs.db
+.DS_Store

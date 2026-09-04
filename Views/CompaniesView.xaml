@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="SMART_ERP.Views.CompaniesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="#F8FAFC">
+
+    <Grid Margin="20">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ENCABEZADO -->
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel>
+                <TextBlock Text="Empresas"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="#0F172A"/>
+
+                <TextBlock Text="Configure las empresas y sus conexiones de datos."
+                           Margin="0,4,0,0"
+                           FontSize="13"
+                           Foreground="#64748B"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- LISTADO -->
+        <DataGrid x:Name="DgCompanies"
+                  Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  HeadersVisibility="Column"
+                  SelectionMode="Single"
+                  SelectionChanged="DgCompanies_SelectionChanged">
+
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="Empresa"
+                                    Binding="{Binding CompanyName}"
+                                    Width="2*"/>
+
+                <DataGridTextColumn Header="Tipo"
+                                    Binding="{Binding ConnectionType}"
+                                    Width="110"/>
+
+                <DataGridTextColumn Header="Servidor"
+                                    Binding="{Binding Server}"
+                                    Width="180"/>
+
+                <DataGridTextColumn Header="Puerto"
+                                    Binding="{Binding Port}"
+                                    Width="80"/>
+
+                <DataGridTextColumn Header="Base de datos"
+                                    Binding="{Binding DatabaseName}"
+                                    Width="180"/>
+
+                <DataGridCheckBoxColumn Header="Activa"
+                                        Binding="{Binding IsActive}"
+                                        Width="80"/>
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <!-- ACCIONES -->
+        <Border Grid.Row="2"
+                Margin="0,15,0,0"
+                Padding="15"
+                Background="White"
+                BorderBrush="#E2E8F0"
+                BorderThickness="1"
+                CornerRadius="8">
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+
+                    <TextBlock Text="Empresa seleccionada"
+                               FontSize="12"
+                               Foreground="#64748B"/>
+
+                    <TextBlock x:Name="TxtSelectedCompany"
+                               Text="Ninguna"
+                               Margin="0,3,0,0"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               Foreground="#0F172A"/>
+
+                </StackPanel>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</UserControl>
+

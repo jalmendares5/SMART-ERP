@@ -1,0 +1,229 @@
+﻿<Window x:Class="SMART_ERP.Views.NewCompanyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Nueva empresa"
+        Width="620"
+        Height="650"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#F8FAFC" ShowInTaskbar="False">
+
+    <Grid Margin="25">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ENCABEZADO -->
+
+        <StackPanel Grid.Row="0"
+                    Margin="0,0,0,20">
+
+            <TextBlock Text="Nueva empresa"
+                       FontSize="25"
+                       FontWeight="SemiBold"
+                       Foreground="#0F172A"/>
+
+            <TextBlock Text="Configure los datos de la empresa y la ubicación de sus datos."
+                       Margin="0,5,0,0"
+                       FontSize="13"
+                       Foreground="#64748B"
+                       TextWrapping="Wrap"/>
+
+        </StackPanel>
+
+        <!-- FORMULARIO -->
+
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto">
+
+            <StackPanel>
+
+                <TextBlock Text="Datos de la empresa"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           Foreground="#0F172A"
+                           Margin="0,0,0,12"/>
+
+                <TextBlock Text="Nombre de la empresa"
+                           Foreground="#475569"/>
+
+                <TextBox x:Name="TxtCompanyName"
+                         Margin="0,5,0,12"
+                         Height="34"
+                         Padding="8"
+                         TextChanged="TxtCompanyName_TextChanged"/>
+
+                <TextBlock Text="Nombre de base de datos"
+                           Foreground="#475569"/>
+
+                <TextBox x:Name="TxtDatabase"
+                         Margin="0,5,0,12"
+                         Height="34"
+                         Padding="8"
+                         IsReadOnly="True"
+                         Background="#E2E8F0"
+                         Foreground="#334155"/>
+
+                <TextBlock Text="Razón social"
+                           Foreground="#475569"/>
+
+                <TextBox x:Name="TxtLegalName"
+                         Margin="0,5,0,12"
+                         Height="34"
+                         Padding="8"/>
+
+                <TextBlock Text="RTN"
+                           Foreground="#475569"/>
+                <TextBox x:Name="TxtTaxId" MaxLength="16" TextChanged="TxtTaxId_TextChanged"/>
+
+                <TextBlock Text="Teléfono"
+                           Foreground="#475569"/>
+
+                <TextBox x:Name="TxtPhone"
+         MaxLength="9"
+         TextChanged="TxtPhone_TextChanged"/>
+
+                <TextBlock Text="Correo electrónico"
+                           Foreground="#475569"/>
+
+                <TextBox x:Name="TxtEmail"
+                         Margin="0,5,0,12"
+                         Height="34"
+                         Padding="8"/>
+
+                <TextBlock Text="Dirección"
+                           Foreground="#475569"/>
+
+                <TextBox x:Name="TxtAddress"
+                         Margin="0,5,0,20"
+                         Height="60"
+                         Padding="8"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto"/>
+
+
+                <TextBlock Text="Ubicación de los datos"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           Foreground="#0F172A"
+                           Margin="0,0,0,12"/>
+
+                <RadioButton x:Name="RbLocal"
+                             Content="Local"
+                             GroupName="ConnectionType"
+                             IsChecked="True"
+                             Margin="0,0,0,8"
+                             Checked="ConnectionType_Changed"/>
+
+                <TextBlock Text="La base de datos estará en esta computadora."
+                           Margin="25,0,0,12"
+                           FontSize="12"
+                           Foreground="#64748B"/>
+
+                <RadioButton x:Name="RbLan"
+                             Content="Red local"
+                             GroupName="ConnectionType"
+                             Margin="0,0,0,8"
+                             Checked="ConnectionType_Changed"/>
+
+                <TextBlock Text="La base de datos estará en otra computadora dentro de la red local."
+                           Margin="25,0,0,12"
+                           FontSize="12"
+                           Foreground="#64748B"
+                           TextWrapping="Wrap"/>
+
+                <RadioButton x:Name="RbRemote"
+                             Content="Remota"
+                             GroupName="ConnectionType"
+                             Margin="0,0,0,8"
+                             Checked="ConnectionType_Changed"/>
+
+                <TextBlock Text="La base de datos estará en un servidor remoto. La VPN puede utilizarse para acceder a él."
+                           Margin="25,0,0,15"
+                           FontSize="12"
+                           Foreground="#64748B"
+                           TextWrapping="Wrap"/>
+
+
+                <TextBlock Text="Servidor"
+                           Foreground="#475569"/>
+
+                <TextBox x:Name="TxtServer"
+                         Text="127.0.0.1"
+                         Margin="0,5,0,12"
+                         Height="34"
+                         Padding="8"/>
+
+                <TextBlock Text="Puerto MariaDB"
+                           Foreground="#475569"/>
+
+                <TextBox x:Name="TxtPort"
+                         Text="3307"
+                         Margin="0,5,0,12"
+                         Height="34"
+                         Padding="8"/>
+
+                <TextBlock Text="Usuario de base de datos"
+                           Foreground="#475569"/>
+
+                <TextBox x:Name="TxtUsername"
+                         Margin="0,5,0,12"
+                         Height="34"
+                         Padding="8"/>
+
+                <TextBlock Text="Contraseña"
+                           Foreground="#475569"/>
+
+                <PasswordBox x:Name="TxtPassword"
+                             Margin="0,5,0,15"
+                             Height="34"
+                             Padding="8"/>
+
+            </StackPanel>
+
+        </ScrollViewer>
+
+
+        <!-- BOTONES -->
+
+        <Border Grid.Row="2"
+                Margin="0,15,0,0"
+                Padding="12"
+                Background="White"
+                BorderBrush="#E2E8F0"
+                BorderThickness="1"
+                CornerRadius="8">
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <Button Content="Cancelar"
+                        Width="100"
+                        Padding="10,8"
+                        Margin="0,0,8,0"
+                        Click="BtnCancel_Click"/>
+
+                <Button Content="Guardar"
+                        Width="110"
+                        Padding="10,8"
+                        Click="BtnSave_Click"/>
+
+            </StackPanel>
+
+        </Border>
+
+    </Grid>
+
+</Window>
+
+
+
+
+
+
+
+

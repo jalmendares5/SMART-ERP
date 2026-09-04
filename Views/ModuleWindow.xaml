@@ -1,0 +1,52 @@
+﻿<Window x:Class="SMART_ERP.Views.ModuleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Módulo"
+        Height="780"
+        Width="1280"
+        WindowStartupLocation="CenterOwner"
+        Background="#F3F6FB"
+        Icon="/Resources/SmartERP.png" ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="#0D47A1" Padding="12,7">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="TxtModuleTitle"
+                           Text="Módulo"
+                           Foreground="White"
+                           FontWeight="SemiBold"
+                           FontSize="16"
+                           VerticalAlignment="Center"/>
+
+                <Button Grid.Column="1"
+                        Content="Cerrar"
+                        Padding="12,4"
+                        Cursor="Hand"
+                        Click="BtnClose_Click"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Background="#DDE5F2" BorderBrush="#C5CFDE" BorderThickness="0,0,0,1" Padding="8,6">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <StackPanel x:Name="RibbonPanel" Orientation="Horizontal"/>
+            </ScrollViewer>
+        </Border>
+
+        <Border Grid.Row="2" Margin="8" Background="White" BorderBrush="#D9E1EF" BorderThickness="1">
+            <ContentControl x:Name="ModuleContent"/>
+        </Border>
+    </Grid>
+</Window>
